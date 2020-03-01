@@ -58,9 +58,9 @@ enum planck_layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_grid(KC_ESCAPE,KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_BSPACE,KC_TAB,KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCOLON,KC_QUOTE,KC_LSHIFT,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMMA,KC_DOT,KC_UP,KC_ENTER,TT(4),KC_LCTRL,KC_LGUI,KC_LALT,TT(1),KC_SPACE,KC_NO,TT(2),KC_SLASH,KC_LEFT,KC_DOWN,KC_RIGHT),
 
-  [_LOWER] = LAYOUT_planck_grid(KC_PSCREEN,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_INSERT,KC_DELETE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_PGUP,KC_HOME,KC_TRANSPARENT,LSFT_T(KC_CAPSLOCK),KC_PC_UNDO,KC_TRANSPARENT,KC_PC_COPY,KC_PC_PASTE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_PGDOWN,KC_END,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,RESET,KC_TRANSPARENT,KC_TRANSPARENT,WEBUSB_PAIR,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT),
+  [_RAISE] = LAYOUT_planck_grid(KC_PSCREEN,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_INSERT,KC_DELETE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_HOME,KC_PGUP,KC_TRANSPARENT,LSFT_T(KC_CAPSLOCK),KC_PC_UNDO,KC_TRANSPARENT,KC_PC_COPY,KC_PC_PASTE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_END,KC_PGDOWN,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,RESET,KC_TRANSPARENT,KC_TRANSPARENT,WEBUSB_PAIR,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT),
 
-  [_RAISE] = LAYOUT_planck_grid(KC_GRAVE,KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,KC_BSPACE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_MINUS,KC_EQUAL,KC_LBRACKET,KC_RBRACKET,KC_BSLASH,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_UP,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_SPACE,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,KC_LEFT,KC_DOWN,KC_RIGHT),
+  [_LOWER] = LAYOUT_planck_grid(KC_GRAVE,KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,KC_BSPACE,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_MINUS,KC_EQUAL,KC_LBRACKET,KC_RBRACKET,KC_BSLASH,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_UP,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_SPACE,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,KC_LEFT,KC_DOWN,KC_RIGHT),
 
   [_ADJUST] = LAYOUT_planck_grid(RESET,KC_TRANSPARENT,HSV_0_0_255,KC_TRANSPARENT,HSV_0_255_255,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,HSV_22_252_246,HSV_215_255_128,KC_TRANSPARENT,KC_TRANSPARENT,AU_TOG,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,HSV_86_255_128,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,RGB_TOG,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,HSV_0_0_0,HSV_18_255_108,KC_TRANSPARENT,KC_TRANSPARENT,HSV_172_255_255,KC_TRANSPARENT,MU_TOG,TOGGLE_LAYER_COLOR,RGB_MOD,RGB_HUI,RGB_SLD,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,RGB_VAD,RGB_HUD,RGB_VAI),
 
@@ -217,53 +217,131 @@ uint32_t layer_state_set_user(uint32_t state) {
  * `-----------------------------------------------------------'
  *
  * Set indices below of LED's you want for each colormap.
+ *
+ *
+ *  ORANGE: Special Character Keys / Mouse Clicks
+ *    Backspace
+ *    Enter
+ *    ESC
+ *    Tab
+ *
+ *  TEAL/SPRINGGREEN: Standarfd Keys / Symbols
+ *
+ * PURPLE: Modifiers / Secondary Symbols
+ *   Shift
+ *   Ctrl
+ *   Alt
+ *   OS
+ *   + / -
+ *   _ / =
+ *   [] / {}
+ *   BKSLH / PIPE
+ *   BKTICK / TILDE
+ *
+ * BLUE: Keyboard functions
+ *   RAISE
+ *   LOWER
+ *   FN Toggled On
+ *   Toggle VIM
+ *   Toggle MOUSE
+ *
+ * GREEN: System Keys
+ *   Delete
+ *   Insert
+ *   PgUp
+ *   PgDown
+ *   Home
+ *   End
+ *   PrtScrn
+ *   Media Keys
+ *
+ * RED: Keyboard Reset
+ * 
+ * WHITE: Other
+ *   Space
+ *   Movement Keys
+ *   FN Toggled Off
+ *   F-Keys
+ *   Number Keys
+ *   Macros
+ *  
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*  Define custom colors and set up color palettes */
 
-#define _DAN_RGB_ORANGE =   0xff, 0x60, 0x00; // ORANGE
-#define _DAN_RGB_TEAL = 0x05, 0xeb, 0x8f; // TEAL
-#define _DAN_RGB_PURPLE = 0x80, 0x00, 0xff; // PURPLE
-#define _DAN_RGB_OFF = 0x00, 0x00, 0x00;
+#define _DAN_RGB_ORANGE  0xff, 0x60, 0x00 // ORANGE
+#define _DAN_RGB_TEAL 0x3c, 0xf2, 0x73  // TEAL
+#define _DAN_RGB_PURPLE 0x80, 0x00, 0xff  // PURPLE
+#define _DAN_RGB_OFF 0x00, 0x00, 0x00     // OFF
 
 const uint8_t _RGB_PALETTE_BASE[][NUM_RGB] = {
-  _DAN_RGB_ORANGE,
-  _DAN_RGB_TEAL,
-  _DAN_RGB_PURPLE,
-  RGB_WHITE,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF // default
+  { _DAN_RGB_ORANGE },
+  { RGB_SPRINGGREEN },
+  { _DAN_RGB_PURPLE },
+  { RGB_WHITE },
+  { RGB_BLUE },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF } // default
 };
 
 const uint8_t _RGB_PALETTE_LOWER[][NUM_RGB] = {
-  _DAN_RGB_ORANGE,
-  RGB_RED,
-  RGB_GREEN,
-  _DAN_RGB_PURPLE,
-  RGB_WHITE,
-  RGB_BLUE,
-  _DAN_RGB_OFF // default
+  { _DAN_RGB_ORANGE },
+  { RGB_SPRINGGREEN },
+  { _DAN_RGB_PURPLE },
+  { RGB_WHITE },
+  { RGB_BLUE },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
 };
 
 const uint8_t _RGB_PALETTE_RAISE[][NUM_RGB] = {
-  _DAN_RGB_ORANGE,
-  _DAN_RGB_TEAL,
-  _DAN_RGB_PURPLE,
-  RGB_WHITE,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
+  { _DAN_RGB_ORANGE },
+  { RGB_RED },
+  { RGB_GREEN },
+  { _DAN_RGB_PURPLE },
+  { RGB_WHITE },
+  { RGB_BLUE },
+  { _DAN_RGB_OFF } // default
 };
 
 const uint8_t _RGB_PALETTE_ADJUST[][NUM_RGB] = {
-  RGB_RED,
-  RGB_GREEN,
-  _DAN_RGB_ORANGE,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
-  _DAN_RGB_OFF,
+  { RGB_RED },
+  { RGB_BLUE },
+  { _DAN_RGB_ORANGE },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+};
+
+const uint8_t _RGB_PALETTE_FN[][NUM_RGB] = {
+  { RGB_WHITE },
+  { RGB_BLUE },
+  { RGB_GREEN },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+};
+
+const uint8_t _RGB_PALETTE_VIM[][NUM_RGB] = {
+  { RGB_WHITE },
+  { RGB_BLUE },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+};
+
+const uint8_t _RGB_PALETTE_MOUSE[][NUM_RGB] = {
+  { RGB_WHITE },
+  { _DAN_RGB_ORANGE },
+  { RGB_BLUE },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
+  { _DAN_RGB_OFF },
 };
 
 /* Set colormap INDICES below.
@@ -296,7 +374,6 @@ const int _RGB_COLORMAP_BASE[][NUM_LIGHTS] = {
     0,  11, 
     12,
     35,
-    40, 42,
     -1
   },
   // TEAL
@@ -316,11 +393,14 @@ const int _RGB_COLORMAP_BASE[][NUM_LIGHTS] = {
   // WHITE
   {
     34,
-    41, 44, 45, 46,
+    36, 41, 44, 45, 46,
     -1
   },
-  // UNUSED
-  { -1 }, 
+  // BLUE
+  { 
+    40, 42,
+    -1 
+  }, 
   // UNUSED
   { -1 } 
 };
@@ -330,7 +410,39 @@ const int _RGB_COLORMAP_LOWER[][NUM_LIGHTS] = {
   { 
     11, 
     35,
+    -1 
+  } ,
+  // TEAL
+  { -1 },
+  // PURPLE
+  {
+    0,
+    19, 20, 21, 22, 23,
+    24,
+    37, 38, 39,
+    -1
+  },
+  // WHITE
+  {
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    34,
+    36, 41, 44, 45, 46,
+    -1 
+  },
+  // BLUE
+  { 
     40, 42,
+    -1 
+  },
+  // UNUSED
+  { -1 },
+};
+
+const int _RGB_COLORMAP_RAISE[][NUM_LIGHTS] = {
+  // ORANGE
+  { 
+    11, 
+    35,
     -1 
   } ,
   // RED
@@ -354,38 +466,54 @@ const int _RGB_COLORMAP_LOWER[][NUM_LIGHTS] = {
   // WHITE
   {
     25, 27, 28,
+    36,
     -1
   },
   // BLUE
   {
-    41,
+    40, 41, 42,
     -1 
   } 
 };
 
-const int _RGB_COLORMAP_RAISE[][NUM_LIGHTS] = {
-  // ORANGE
-  { 
-    11, 
-    35,
-    40, 42,
-    -1 
-  } ,
-  // TEAL
+const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
+  // RED
   { 
     0,
-    19, 20, 21, 22, 23,
     -1
   },
-  // PURPLE
+  // BLUE
   {
-    24,
-    37, 38, 39,
-    -1
+    13,
+    31,
+    40, 42,
+    -1 
   },
+  // ORANGE
+  { -1 },
+  // UNUSED
+  { -1 },
+  // UNUSED
+  { -1 },
+  // UNUSED
+  { -1 },
+};
+
+const int _RGB_COLORMAP_FN[][NUM_LIGHTS] = {
   // WHITE
+  { 
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+    -1
+  },
+  // BLUE
   {
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+    28, 
+    31,
+    36,
+    -1 
+  },
+  // GREEN
+  { 
     34,
     41, 44, 45, 46,
     -1 
@@ -394,50 +522,25 @@ const int _RGB_COLORMAP_RAISE[][NUM_LIGHTS] = {
   { -1 },
   // UNUSED
   { -1 },
-};
-
-const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
-  // RED
-  { 
-    0,
-    -1
-  },
-  // GREEN
-  {
-    13,
-    31,
-    -1 
-  },
-  // ORANGE
-  { 
-    40, 42,
-    -1 
-  },
-  // UNUSED
-  { -1 },
-  // UNUSED
-  { -1 },
   // UNUSED
   { -1 },
 };
 
-const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
-  // RED
+const int _RGB_COLORMAP_VIM[][NUM_LIGHTS] = {
+  // WHITE
   { 
-    0,
+    2,
+    13, 14, 15,
+    18, 19, 20, 21,
     -1
   },
-  // GREEN
+  // BLUE
   {
-    13,
-    31,
+    0,
     -1 
   },
-  // ORANGE
-  { 
-    40, 42,
-    -1 
-  },
+  // UNUSED
+  { -1 },
   // UNUSED
   { -1 },
   // UNUSED
@@ -446,21 +549,25 @@ const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
   { -1 },
 };
 
-const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
-  // RED
+const int _RGB_COLORMAP_MOUSE[][NUM_LIGHTS] = {
+  // WHITE
   { 
-    0,
+    2,
+    13, 14, 15,
+    34,
+    44, 45, 46,
     -1
   },
-  // GREEN
-  {
-    13,
-    31,
-    -1 
-  },
   // ORANGE
+  {
+    1,  3,
+    22,
+    33, 35,
+    -1 
+  },
+  // BLUE
   { 
-    40, 42,
+    0,
     -1 
   },
   // UNUSED
@@ -469,32 +576,8 @@ const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
   { -1 },
   // UNUSED
   { -1 },
-};
+};  // WHITE
 
-const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
-  // RED
-  { 
-    0,
-    -1
-  },
-  // GREEN
-  {
-    13,
-    31,
-    -1 
-  },
-  // ORANGE
-  { 
-    40, 42,
-    -1 
-  },
-  // UNUSED
-  { -1 },
-  // UNUSED
-  { -1 },
-  // UNUSED
-  { -1 },
-};
 
 /* Color setting funcs--Assume the index arrays have -1 as a sentinel */
 void loop_color_set(const int indices[], uint8_t color[]) {
@@ -533,6 +616,7 @@ void rgb_matrix_indicators_user(void) {
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
   
   // setup defaults
+  // TODO: Clean up - see above
   switch (biton32( layer_state )) {
     case _LOWER:
       for (int i = 0; i <= NUM_FG; i++) {
@@ -577,6 +661,54 @@ void rgb_matrix_indicators_user(void) {
       }
 
       l_c_s_wrapper( _RGB_COLORMAP_ADJUST, palette );
+
+      break;
+
+    case _FN:
+      for (int i = 0; i <= NUM_FG; i++) {
+        for (int j = 0; j < 3; j++) {
+          palette[i][j] = _RGB_PALETTE_FN[i][j];
+        }
+      }
+
+      /* Set background. Assumes background is the last defined color in the palette */
+      for (int i = 0; i < NUM_LIGHTS; i++) {
+        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
+      }
+
+      l_c_s_wrapper( _RGB_COLORMAP_FN, palette );
+
+      break;
+
+    case _VIM:
+      for (int i = 0; i <= NUM_FG; i++) {
+        for (int j = 0; j < 3; j++) {
+          palette[i][j] = _RGB_PALETTE_VIM[i][j];
+        }
+      }
+
+      /* Set background. Assumes background is the last defined color in the palette */
+      for (int i = 0; i < NUM_LIGHTS; i++) {
+        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
+      }
+
+      l_c_s_wrapper( _RGB_COLORMAP_VIM, palette );
+
+      break;
+
+    case _MOUSE:
+      for (int i = 0; i <= NUM_FG; i++) {
+        for (int j = 0; j < 3; j++) {
+          palette[i][j] = _RGB_PALETTE_MOUSE[i][j];
+        }
+      }
+
+      /* Set background. Assumes background is the last defined color in the palette */
+      for (int i = 0; i < NUM_LIGHTS; i++) {
+        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
+      }
+
+      l_c_s_wrapper( _RGB_COLORMAP_MOUSE, palette );
 
       break;
 
