@@ -8,7 +8,6 @@
   Set any config.h overrides for your specific keymap here.
   See config.h options at https://docs.qmk.fm/#/config_options?id=the-configh-file
 */
-#define NUM_LIGHTS 47
 #define NUM_FG 6 // Number of foreground colors 
 #define NUM_RGB 3
 

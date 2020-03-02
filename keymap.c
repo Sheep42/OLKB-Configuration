@@ -301,7 +301,7 @@ const uint8_t _RGB_PALETTE_MOUSE[][NUM_RGB] = {
  *
  * Each array MUST end with a -1, or else the setting functions won't loop. For example:
  *
- *   const int ABC[][NUM_LIGHTS] = {
+ *   const int ABC[][DRIVER_LED_TOTAL] = {
  *     {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, -1},
  *     {12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, -1},
  *     {24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, -1}
@@ -591,7 +591,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -606,7 +606,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -621,7 +621,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -637,7 +637,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -653,7 +653,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -669,7 +669,7 @@ void rgb_matrix_indicators_user(void) {
       }
 
       /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
         rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
       }
 
@@ -687,8 +687,8 @@ void rgb_matrix_indicators_user(void) {
       // Set background. Assumes background is the last defined color in the palette 
       // TODO: This should allow for preservation of the config val
       // if the bg is not set to off
-      for (int i = 0; i < NUM_LIGHTS; i++) {
-        for (int i = 0; i < NUM_LIGHTS; i++) {
+      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+        for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
           rgb_matrix_set_color( i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2] );
         }
       }
