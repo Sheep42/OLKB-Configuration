@@ -73,16 +73,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-      }
-      return false;
-  }
-  return true;
-}
+// bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//   switch (keycode) {
+
+//   }
+//   return true;
+// }
 
 #ifdef AUDIO_ENABLE
 bool muse_mode = false;
@@ -209,6 +205,8 @@ uint32_t layer_state_set_user(uint32_t state) {
  *
  * RED: Keyboard Reset
  * 
+ * MAGENTA: RGB Controls
+ * 
  * WHITE: Other
  *   Space
  *   Movement Keys
@@ -222,79 +220,78 @@ uint32_t layer_state_set_user(uint32_t state) {
 /*  Define custom colors and set up color palettes */
 // TODO: Move macros to header
 
-#define _DAN_RGB_ORANGE  0xff, 0x60, 0x00 // ORANGE
-#define _DAN_RGB_TEAL 0x3c, 0xf2, 0x73  // TEAL
-#define _DAN_RGB_PURPLE 0x80, 0x00, 0xff  // PURPLE
-#define _DAN_RGB_OFF 0x00, 0x00, 0x00     // OFF
+#define _DAN_HSV_ORANGE  16, 255, 255 // ORANGE
+#define _DAN_HSV_PURPLE 191, 255, 255  // PURPLE
+#define _DAN_HSV_OFF 0, 0, 0     // OFF
 
-const uint8_t _RGB_PALETTE_BASE[][NUM_RGB] = {
-  { _DAN_RGB_ORANGE },
-  { RGB_SPRINGGREEN },
-  { _DAN_RGB_PURPLE },
-  { RGB_WHITE },
-  { RGB_BLUE },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF } // default
+const uint8_t _RGB_PALETTE_BASE[][3] = {
+  { _DAN_HSV_ORANGE },
+  { HSV_SPRINGGREEN },
+  { _DAN_HSV_PURPLE },
+  { HSV_WHITE },
+  { HSV_BLUE },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF } // default
 };
 
 const uint8_t _RGB_PALETTE_LOWER[][NUM_RGB] = {
-  { _DAN_RGB_ORANGE },
-  { RGB_SPRINGGREEN },
-  { _DAN_RGB_PURPLE },
-  { RGB_WHITE },
-  { RGB_BLUE },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
+  { _DAN_HSV_ORANGE },
+  { HSV_SPRINGGREEN },
+  { _DAN_HSV_PURPLE },
+  { HSV_WHITE },
+  { HSV_BLUE },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
 };
 
 const uint8_t _RGB_PALETTE_RAISE[][NUM_RGB] = {
-  { _DAN_RGB_ORANGE },
-  { RGB_RED },
-  { RGB_GREEN },
-  { _DAN_RGB_PURPLE },
-  { RGB_WHITE },
-  { RGB_BLUE },
-  { _DAN_RGB_OFF } // default
+  { _DAN_HSV_ORANGE },
+  { HSV_RED },
+  { HSV_GREEN },
+  { _DAN_HSV_PURPLE },
+  { HSV_WHITE },
+  { HSV_BLUE },
+  { _DAN_HSV_OFF } // default
 };
 
 const uint8_t _RGB_PALETTE_ADJUST[][NUM_RGB] = {
-  { RGB_RED },
-  { RGB_BLUE },
-  { _DAN_RGB_ORANGE },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
+  { HSV_RED },
+  { HSV_BLUE },
+  { HSV_MAGENTA },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
 };
 
 const uint8_t _RGB_PALETTE_FN[][NUM_RGB] = {
-  { RGB_WHITE },
-  { RGB_BLUE },
-  { RGB_GREEN },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
+  { HSV_WHITE },
+  { HSV_BLUE },
+  { HSV_GREEN },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
 };
 
 const uint8_t _RGB_PALETTE_VIM[][NUM_RGB] = {
-  { RGB_WHITE },
-  { RGB_BLUE },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
+  { HSV_WHITE },
+  { HSV_BLUE },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
 };
 
 const uint8_t _RGB_PALETTE_MOUSE[][NUM_RGB] = {
-  { RGB_WHITE },
-  { _DAN_RGB_ORANGE },
-  { RGB_BLUE },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
-  { _DAN_RGB_OFF },
+  { HSV_WHITE },
+  { _DAN_HSV_ORANGE },
+  { HSV_BLUE },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
+  { _DAN_HSV_OFF },
 };
 
 /* Set colormap INDICES below.
@@ -321,7 +318,7 @@ const uint8_t _RGB_PALETTE_MOUSE[][NUM_RGB] = {
 // TODO: Clean up this mess
 // Would like to find a better way to define and 
 // access these
-const int _RGB_COLORMAP_BASE[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_BASE[][DRIVER_LED_TOTAL] = {
   // ORANGE
   { 
     0,  11, 
@@ -358,7 +355,7 @@ const int _RGB_COLORMAP_BASE[][NUM_LIGHTS] = {
   { -1 } 
 };
 
-const int _RGB_COLORMAP_LOWER[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_LOWER[][DRIVER_LED_TOTAL] = {
   // ORANGE
   { 
     11, 
@@ -391,7 +388,7 @@ const int _RGB_COLORMAP_LOWER[][NUM_LIGHTS] = {
   { -1 },
 };
 
-const int _RGB_COLORMAP_RAISE[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_RAISE[][DRIVER_LED_TOTAL] = {
   // ORANGE
   { 
     35,
@@ -430,7 +427,7 @@ const int _RGB_COLORMAP_RAISE[][NUM_LIGHTS] = {
   } 
 };
 
-const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_ADJUST[][DRIVER_LED_TOTAL] = {
   // RED
   { 
     0,
@@ -443,8 +440,11 @@ const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
     40, 42,
     -1 
   },
-  // ORANGE
-  { -1 },
+  // MAGENTA
+  { 
+    44, 46,
+    -1 
+  },
   // UNUSED
   { -1 },
   // UNUSED
@@ -453,7 +453,7 @@ const int _RGB_COLORMAP_ADJUST[][NUM_LIGHTS] = {
   { -1 },
 };
 
-const int _RGB_COLORMAP_FN[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_FN[][DRIVER_LED_TOTAL] = {
   // WHITE
   { 
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -480,7 +480,7 @@ const int _RGB_COLORMAP_FN[][NUM_LIGHTS] = {
   { -1 },
 };
 
-const int _RGB_COLORMAP_VIM[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_VIM[][DRIVER_LED_TOTAL] = {
   // WHITE
   { 
     2,
@@ -503,7 +503,7 @@ const int _RGB_COLORMAP_VIM[][NUM_LIGHTS] = {
   { -1 },
 };
 
-const int _RGB_COLORMAP_MOUSE[][NUM_LIGHTS] = {
+const int _RGB_COLORMAP_MOUSE[][DRIVER_LED_TOTAL] = {
   // WHITE
   { 
     2,
@@ -535,11 +535,22 @@ const int _RGB_COLORMAP_MOUSE[][NUM_LIGHTS] = {
 
 /* Color setting funcs--Assume the index arrays have -1 as a sentinel */
 void loop_color_set(const int indices[], uint8_t color[]) {
+    HSV hsv = { 
+    // Later
+    // .h = pgm_read_byte(&layercolors[layer][0]), 
+    // .s = pgm_read_byte(&layercolors[layer][1]), 
+    .h = color[0],
+    .s = color[1],
+    .v = rgb_matrix_config.hsv.v
+  };
+
+  RGB rgb = hsv_to_rgb( hsv );
+
   for (int i = 0; indices[i] != -1 ; i++) 
-    rgb_matrix_set_color(indices[i], color[0], color[1], color[2]);
+    rgb_matrix_set_color( indices[i], rgb.r, rgb.g, rgb.b );
 }
 
-void l_c_s_wrapper(const int per_layer_ind[][NUM_LIGHTS], uint8_t palette[][NUM_RGB]) {
+void l_c_s_wrapper(const int per_layer_ind[][DRIVER_LED_TOTAL], uint8_t palette[][NUM_RGB]) {
   for (int i = 0; i < NUM_FG; i++)
     loop_color_set(per_layer_ind[i], palette[i]);
 }
@@ -673,11 +684,16 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
+      // Set background. Assumes background is the last defined color in the palette 
+      // TODO: This should allow for preservation of the config val
+      // if the bg is not set to off
       for (int i = 0; i < NUM_LIGHTS; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
+        for (int i = 0; i < NUM_LIGHTS; i++) {
+          rgb_matrix_set_color( i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2] );
+        }
       }
 
+      // set_layer_color();
       l_c_s_wrapper(  _RGB_COLORMAP_BASE, palette );
       break;
   }

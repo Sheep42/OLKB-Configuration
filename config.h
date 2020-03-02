@@ -13,14 +13,9 @@
 #define NUM_RGB 3
 
 #ifdef RGB_MATRIX_ENABLE
-#    define RGB_MATRIX_KEYPRESSES  // reacts to keypresses (will slow down matrix scan by a lot)
-// #define RGB_MATRIX_KEYRELEASES // reacts to keyreleases (not recommened)
-// #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS
-// #define RGB_DISABLE_AFTER_TIMEOUT 0 // number of ticks to wait until disabling effects
-// #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 200 // limits maximum brightness of LEDs to 200 out of 255. If not defined maximum brightness is set to 255
-#    define RGB_DISABLE_WHEN_USB_SUSPENDED true  // turn off effects when suspended
-#    undef RGB_MATRIX_LED_PROCESS_LIMIT
-#    undef RGB_MATRIX_LED_FLUSH_LIMIT
+#   define RGB_MATRIX_KEYPRESSES  // reacts to keypresses (will slow down matrix scan by a lot)
+#   define RGB_DISABLE_WHEN_USB_SUSPENDED true  // turn off effects when suspended
+#	define RGB_MATRIX_STARTUP_VAL 150 // default brightness
 #endif
 
 #define ORYX_CONFIGURATOR
