@@ -75,7 +75,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 //   switch (keycode) {
-
 //   }
 //   return true;
 // }
@@ -218,11 +217,6 @@ uint32_t layer_state_set_user(uint32_t state) {
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*  Define custom colors and set up color palettes */
-// TODO: Move macros to header
-
-#define _DAN_HSV_ORANGE  16, 255, 255 // ORANGE
-#define _DAN_HSV_PURPLE 191, 255, 255  // PURPLE
-#define _DAN_HSV_OFF 0, 0, 0     // OFF
 
 const uint8_t _RGB_PALETTE_BASE[][3] = {
   { _DAN_HSV_ORANGE },
@@ -234,7 +228,7 @@ const uint8_t _RGB_PALETTE_BASE[][3] = {
   { _DAN_HSV_OFF } // default
 };
 
-const uint8_t _RGB_PALETTE_LOWER[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_LOWER[][3] = {
   { _DAN_HSV_ORANGE },
   { HSV_SPRINGGREEN },
   { _DAN_HSV_PURPLE },
@@ -244,7 +238,7 @@ const uint8_t _RGB_PALETTE_LOWER[][NUM_RGB] = {
   { _DAN_HSV_OFF },
 };
 
-const uint8_t _RGB_PALETTE_RAISE[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_RAISE[][3] = {
   { _DAN_HSV_ORANGE },
   { HSV_RED },
   { HSV_GREEN },
@@ -254,7 +248,7 @@ const uint8_t _RGB_PALETTE_RAISE[][NUM_RGB] = {
   { _DAN_HSV_OFF } // default
 };
 
-const uint8_t _RGB_PALETTE_ADJUST[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_ADJUST[][3] = {
   { HSV_RED },
   { HSV_BLUE },
   { HSV_MAGENTA },
@@ -264,7 +258,7 @@ const uint8_t _RGB_PALETTE_ADJUST[][NUM_RGB] = {
   { _DAN_HSV_OFF },
 };
 
-const uint8_t _RGB_PALETTE_FN[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_FN[][3] = {
   { HSV_WHITE },
   { HSV_BLUE },
   { HSV_GREEN },
@@ -272,9 +266,10 @@ const uint8_t _RGB_PALETTE_FN[][NUM_RGB] = {
   { _DAN_HSV_OFF },
   { _DAN_HSV_OFF },
   { _DAN_HSV_OFF },
+
 };
 
-const uint8_t _RGB_PALETTE_VIM[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_VIM[][3] = {
   { HSV_WHITE },
   { HSV_BLUE },
   { _DAN_HSV_OFF },
@@ -284,7 +279,7 @@ const uint8_t _RGB_PALETTE_VIM[][NUM_RGB] = {
   { _DAN_HSV_OFF },
 };
 
-const uint8_t _RGB_PALETTE_MOUSE[][NUM_RGB] = {
+const uint8_t _RGB_PALETTE_MOUSE[][3] = {
   { HSV_WHITE },
   { _DAN_HSV_ORANGE },
   { HSV_BLUE },
@@ -530,35 +525,56 @@ const int _RGB_COLORMAP_MOUSE[][DRIVER_LED_TOTAL] = {
   { -1 },
   // UNUSED
   { -1 },
-};  // WHITE
+};
 
+void set_layer_bg_color( uint8_t palette[][3] ) {
+  // Set background. 
+  // Assumes background is the last defined color in the palette 
+  uint8_t val = ( palette[NUM_FG][0] > 0 || palette[NUM_FG][1] > 0 ) ? rgb_matrix_config.hsv.v : palette[NUM_FG][2];
 
-/* Color setting funcs--Assume the index arrays have -1 as a sentinel */
-void loop_color_set(const int indices[], uint8_t color[]) {
-    HSV hsv = { 
+  HSV hsv = { 
     // Later
     // .h = pgm_read_byte(&layercolors[layer][0]), 
     // .s = pgm_read_byte(&layercolors[layer][1]), 
-    .h = color[0],
-    .s = color[1],
-    .v = rgb_matrix_config.hsv.v
+    .h = palette[NUM_FG][0],
+    .s = palette[NUM_FG][1],
+    .v = val
   };
 
   RGB rgb = hsv_to_rgb( hsv );
 
-  for (int i = 0; indices[i] != -1 ; i++) 
-    rgb_matrix_set_color( indices[i], rgb.r, rgb.g, rgb.b );
+  for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+    rgb_matrix_set_color( i, rgb.r, rgb.g, rgb.b );
+  }
+
 }
 
-void l_c_s_wrapper(const int per_layer_ind[][DRIVER_LED_TOTAL], uint8_t palette[][NUM_RGB]) {
-  for (int i = 0; i < NUM_FG; i++)
-    loop_color_set(per_layer_ind[i], palette[i]);
+/* Color setting funcs--Assume the index arrays have -1 as a sentinel */
+void custom_set_rgb( const int per_layer_ind[][DRIVER_LED_TOTAL], uint8_t palette[][3] ) {
+
+  for (int i = 0; i < NUM_FG; i++) {
+
+    HSV hsv = { 
+      // Later
+      // .h = pgm_read_byte(&layercolors[layer][0]), 
+      // .s = pgm_read_byte(&layercolors[layer][1]), 
+      .h = palette[i][0],
+      .s = palette[i][1],
+      .v = rgb_matrix_config.hsv.v
+    };
+
+    RGB rgb = hsv_to_rgb( hsv );
+
+    for(int j = 0; per_layer_ind[i][j] != -1 ; j++) 
+      rgb_matrix_set_color( per_layer_ind[i][j], rgb.r, rgb.g, rgb.b );
+
+  }
 }
 
 /* Code to change specified led colors on layer change, using the above function */
 void rgb_matrix_indicators_user(void) {
   
-  uint8_t palette[NUM_FG + 1][NUM_RGB];
+  uint8_t palette[NUM_FG + 1][3];
 
   /* USER-RELEVANT PART STARTS HERE 
    * 
@@ -569,14 +585,14 @@ void rgb_matrix_indicators_user(void) {
    * the following before the default case:
    *
    *   case <_KEYMAP_LAYER_NAME>:
-   *     l_c_s_wrapper(<COLORMAP_NAME>, palette);
+   *     custom_set_rgb(<COLORMAP_NAME>, palette);
    *     break;
    *   case <_ANOTHER_KEYMAP_LAYER_NAME>:
-   *     l_c_s_wrapper(<ANOTHER_COLORMAP_NAME>, palette);
+   *     custom_set_rgb(<ANOTHER_COLORMAP_NAME>, palette);
    *     break;
    *
    *   ...
-   *const uint8_t _RGB_PALETTE_ADJUST[][NUM_RGB] = {
+   *const uint8_t _RGB_PALETTE_ADJUST[][3] = {
 
    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
   
@@ -590,12 +606,9 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_LOWER, palette );
 
-      l_c_s_wrapper( _RGB_COLORMAP_LOWER, palette );
       break;
 
     case _RAISE:
@@ -605,12 +618,9 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_RAISE, palette );
 
-      l_c_s_wrapper( _RGB_COLORMAP_RAISE, palette );
       break;
 
     case _ADJUST:
@@ -620,12 +630,8 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
-
-      l_c_s_wrapper( _RGB_COLORMAP_ADJUST, palette );
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_ADJUST, palette );
 
       break;
 
@@ -636,12 +642,8 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
-
-      l_c_s_wrapper( _RGB_COLORMAP_FN, palette );
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_FN, palette );
 
       break;
 
@@ -652,12 +654,8 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
-
-      l_c_s_wrapper( _RGB_COLORMAP_VIM, palette );
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_VIM, palette );
 
       break;
 
@@ -668,12 +666,8 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      /* Set background. Assumes background is the last defined color in the palette */
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        rgb_matrix_set_color(i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2]);
-      }
-
-      l_c_s_wrapper( _RGB_COLORMAP_MOUSE, palette );
+      set_layer_bg_color( palette );
+      custom_set_rgb( _RGB_COLORMAP_MOUSE, palette );
 
       break;
 
@@ -684,17 +678,9 @@ void rgb_matrix_indicators_user(void) {
         }
       }
 
-      // Set background. Assumes background is the last defined color in the palette 
-      // TODO: This should allow for preservation of the config val
-      // if the bg is not set to off
-      for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-        for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-          rgb_matrix_set_color( i, palette[NUM_FG][0], palette[NUM_FG][1], palette[NUM_FG][2] );
-        }
-      }
+      set_layer_bg_color( palette );
+      custom_set_rgb(  _RGB_COLORMAP_BASE, palette );
 
-      // set_layer_color();
-      l_c_s_wrapper(  _RGB_COLORMAP_BASE, palette );
       break;
   }
 
