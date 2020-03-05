@@ -539,9 +539,6 @@ void set_layer_bg_color( uint8_t palette[][3] ) {
   uint8_t val = ( palette[NUM_FG][0] > 0 || palette[NUM_FG][1] > 0 ) ? rgb_matrix_config.hsv.v : palette[NUM_FG][2];
 
   HSV hsv = { 
-    // Later
-    // .h = pgm_read_byte(&layercolors[layer][0]), 
-    // .s = pgm_read_byte(&layercolors[layer][1]), 
     .h = palette[NUM_FG][0],
     .s = palette[NUM_FG][1],
     .v = val
